@@ -10,10 +10,22 @@ from datetime import date
 from datetime import time
 from uszipcode import ZipcodeSearchEngine
 import pickle # Importing Pickle library to store dictionary object
+"""
+These methods are written to clean and prepare the NYC Yellow cab trip details data set.
+@author: Mayank Pandey
+@author: Sanket Agarwal
+
+"""
 
 
 def distance_to_cover(pickup_point, drop_off_point):
-    radius_earth = 6373.0
+    """
+        This method calculates the haversine distance (crow-fly distance) for two points
+        :param pickup_point: Pickup lat and long
+        :param drop_off_point: drop off lat and long
+        :return: haversine distance
+        """
+    radius_earth = 6373.0  # Earth radius
     latitude_pick = radians(float(pickup_point[0]))
     longitude_pick = radians(float(pickup_point[1]))
     latitude_drop = radians(float(drop_off_point[0]))
@@ -26,16 +38,23 @@ def distance_to_cover(pickup_point, drop_off_point):
     return distance
 
 def trip_prediction(df):
+    """
+    This method is mainly used to eliminate all unwanted attributes,
+    add new features (time_of_day,type_of_day, zip_code etc) and do other alterations
+
+    Most part of the code is commented out because the entire processing took
+    a lot of time (5-6 hours) since we were using Google API and calling
+    Google API's for  over 1 million records takes a lot of time.
+    :param df: This is the dataframe of the original training data whcih has to be altered
+    :return: None
+    """
     geo_locator = Nominatim()
     now = datetime.now()
-    api_key = 'AIzaSyCkyCJch-eC5EZBdgUx5lQwqknjwJ8hHOA'  # Google api_key
-    gmaps = googlemaps.Client(api_key)
 
     # column_header = list(df)
     data_list = df.values.tolist()
     max_mile = -999999
     count = 0
-
 
     '''for row in data_list:
         del row[0]
@@ -127,7 +146,7 @@ def trip_prediction(df):
         nyc_all_zipcodes = pickle.load(handle)
 
     with open('data_list_1.pickle', 'rb') as handle:
-        data_list = pickle.load(handle)
+        data_list_pickle = pickle.load(handle)
 
     '''main_list = df.values.tolist()
     for i in range(len(main_list)):
@@ -136,14 +155,67 @@ def trip_prediction(df):
         data_list[i].append(main_list[i][6])
         data_list[i].append(main_list[i][5])'''
 
+    for ind in range(len(data_list)):
+        data_list[ind][2] = data_list[ind][2].split()
+        t = [int(x) for x in data_list[ind][2][1].split(":")]
+        pickup_time = time(t[0], t[1], 0, 0, None)
+        time_of_day = None
+        if pickup_time >= time(5, 0, 0, 0, None) and pickup_time <= time(5, 59, 0, 0, None):
+            time_of_day = 0
+        elif pickup_time >= time(6, 0, 0, 0, None) and pickup_time <= time(6, 59, 0, 0, None):
+            time_of_day = 1
+        elif pickup_time >= time(7, 0, 0, 0, None) and pickup_time <= time(7, 59, 0, 0, None):
+            time_of_day = 2
+        elif pickup_time >= time(8, 0, 0, 0, None) and pickup_time <= time(8, 59, 0, 0, None):
+            time_of_day = 3
+        elif pickup_time >= time(9, 0, 0, 0, None) and pickup_time <= time(9, 59, 0, 0, None):
+            time_of_day = 4
+        elif pickup_time >= time(10, 0, 0, 0, None) and pickup_time <= time(10, 59, 0, 0, None):
+            time_of_day = 5
+        elif pickup_time >= time(11, 0, 0, 0, None) and pickup_time <= time(11, 59, 0, 0, None):
+            time_of_day = 6
+        elif pickup_time >= time(12, 0, 0, 0, None) and pickup_time <= time(12, 59, 0, 0, None):
+            time_of_day = 7
+        elif pickup_time >= time(13, 0, 0, 0, None) and pickup_time <= time(13, 59, 0, 0, None):
+            time_of_day = 8
+        elif pickup_time >= time(14, 0, 0, 0, None) and pickup_time <= time(14, 59, 0, 0, None):
+            time_of_day = 9
+        elif pickup_time >= time(15, 0, 0, 0, None) and pickup_time <= time(15, 59, 0, 0, None):
+            time_of_day = 10
+        elif pickup_time >= time(16, 0, 0, 0, None) and pickup_time <= time(16, 59, 0, 0, None):
+            time_of_day = 11
+        elif pickup_time >= time(17, 0, 0, 0, None) and pickup_time <= time(17, 59, 0, 0, None):
+            time_of_day = 12
+        elif pickup_time >= time(18, 0, 0, 0, None) and pickup_time <= time(18, 59, 0, 0, None):
+            time_of_day = 13
+        elif pickup_time >= time(19, 0, 0, 0, None) and pickup_time <= time(19, 59, 0, 0, None):
+            time_of_day = 14
+        elif pickup_time >= time(20, 0, 0, 0, None) and pickup_time <= time(20, 59, 0, 0, None):
+            time_of_day = 15
+        elif pickup_time >= time(21, 0, 0, 0, None) and pickup_time <= time(21, 59, 0, 0, None):
+            time_of_day = 16
+        elif pickup_time >= time(22, 0, 0, 0, None) and pickup_time <= time(22, 59, 0, 0, None):
+            time_of_day = 17
+        elif pickup_time >= time(23, 0, 0, 0, None) and pickup_time <= time(23, 59, 0, 0, None):
+            time_of_day = 18
+        elif pickup_time >= time(1, 0, 0, 0, None) and pickup_time <= time(1, 59, 0, 0, None):
+            time_of_day = 19
+        elif pickup_time >= time(2, 0, 0, 0, None) and pickup_time <= time(2, 59, 0, 0, None):
+            time_of_day = 20
+        elif pickup_time >= time(3, 0, 0, 0, None) and pickup_time <= time(3, 59, 0, 0, None):
+            time_of_day = 21
+        elif pickup_time >= time(4, 0, 0, 0, None) and pickup_time <= time(4, 59, 0, 0, None):
+            time_of_day = 22
+        else:
+            time_of_day = 23
+        data_list_pickle[ind][2] = time_of_day
 
     search = ZipcodeSearchEngine()
 
-
-
     column_header = ['pickup_month','type_of_day', 'time_of_day','pickup_zip', 'dropoff_zip','pick_lat','pick_long','drop_lat','drop_long','distance_to_cover','trip_duration']
     print("hello")
-    with open("train_cleaned_new_full.csv", 'w') as csvfile:
+    data_list = data_list_pickle  # writing the data to a csv file
+    with open("train_cleaned_new_full_with_per_hr.csv", 'w') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_header)
         writer.writeheader()
         size = len(data_list)
@@ -157,6 +229,10 @@ def trip_prediction(df):
     print(data_list[1])
 
 def changing_data():
+    """
+    This method was wrtten to make some extended modifications while preparing the data
+    :return:
+    """
     file_name1 = 'train.csv'
     df1 = p.read_csv(file_name1)
     data_list1 = df1.values.tolist()
@@ -181,6 +257,10 @@ def changing_data():
 
 
 def main():
+    """
+    This is the main method to run the other methods
+    :return: None
+    """
     file_name = "train.csv"
     df = p.read_csv(file_name)
     geo_locator = Nominatim()
@@ -190,7 +270,7 @@ def main():
     location_coordinates = geo_locator.reverse(coordinates)
     print(location_coordinates.address)'''
 
-    address_pick = input("Enter the pick up address: ")
+    '''address_pick = input("Enter the pick up address: ")
     location_address_pick = geo_locator.geocode(address_pick)
     print("Address: " + location_address_pick.address)
     print("coordinates: " + str(location_address_pick.latitude) + "," + str(location_address_pick.longitude))
@@ -202,11 +282,11 @@ def main():
     print("coordinates: " + str(location_address_drop.latitude) + "," + str(location_address_drop.longitude))
     coordinates_drop = (location_address_drop.latitude, location_address_drop.longitude)
 
-    '''coordinates = input("enter the coordinates")
+    coordinates = input("enter the coordinates")
     location_coordinates = geo_locator.reverse(coordinates)
     print(location_coordinates.address)
 
-    print(type(now))'''
+    print(type(now))
     gmaps = googlemaps.Client(api_key)
 
     directions_result = gmaps.directions(coordinates_pick,
@@ -216,14 +296,14 @@ def main():
                                          departure_time=now
                                          )
     print(directions_result[0]['legs'][0]['distance']['text'])
-    print(directions_result[0]['legs'][0]['duration']['text'])
+    print(directions_result[0]['legs'][0]['duration']['text'])'''
 
 
 #40.7639389,-73.97902679
 #40.71008682,-74.00533295'''
 
 
-    #trip_prediction(df)
+    trip_prediction(df)
     #changing_data()
 
 if __name__ == '__main__':

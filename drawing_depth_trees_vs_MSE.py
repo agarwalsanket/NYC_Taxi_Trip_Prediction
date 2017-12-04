@@ -1,4 +1,10 @@
 import matplotlib.pyplot as plt  # Importing Matplotlib library for plotting graphs
+"""
+This method is used to plot graph between depth of Random forest regressor tree and the MSE
+@author: Mayank Pandey
+@author: Sanket Agarwal
+"""
+
 def draw_graph_depth_mse():
 
     # Mean squared error calculated from the NYC_taxi_trip_prediction.py file
