@@ -5,7 +5,7 @@ import csv
 
 """
 This method is used to plot graph between distance invers and the trip duration
-@author: Mayank Pandey
+
 @author: Sanket Agarwal
 """
 def draw_graph_distance_inverse_VS_duration():

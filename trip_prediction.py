@@ -12,7 +12,7 @@ from uszipcode import ZipcodeSearchEngine
 import pickle # Importing Pickle library to store dictionary object
 """
 These methods are written to clean and prepare the NYC Yellow cab trip details data set.
-@author: Mayank Pandey
+
 @author: Sanket Agarwal
 
 """

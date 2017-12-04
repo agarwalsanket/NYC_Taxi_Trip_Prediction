@@ -16,7 +16,6 @@ from flask import Flask, redirect, url_for, request,render_template
 app = Flask(__name__)
 
 """
-@author:Mayank Pandey
 @author:Sanket Agarwal
 
 Python code for the NYC Trip duration prediction project.

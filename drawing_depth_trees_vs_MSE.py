@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt  # Importing Matplotlib library for plotting graphs
 """
 This method is used to plot graph between depth of Random forest regressor tree and the MSE
-@author: Mayank Pandey
+
 @author: Sanket Agarwal
 """
 
